@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الأقسام | Wishes</title>
+  <meta name="description" content="تسوّقي من Wishes حسب القسم: عطور، عناية بالجسم، عناية بالشعر ومكياج." />
+  <meta name="theme-color" content="#c2477f" />
+  <link rel="icon" type="image/png" href="/images/wishes-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body data-page="categories">
+
+<!-- Icon sprite, injected before the markup below is parsed. -->
+<script src="/sprite.js"></script>
+
+<!-- Header, footer and floating button are rendered by src/layout.js -->
+<header class="site-header" id="top"></header>
+
+<main>
+  <!-- Categories -->
+  <section class="section" id="categories">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">تسوّقي حسب القسم</p>
+        <h1>كل ما تتمنّينه في مكان واحد</h1>
+      </div>
+      <div class="categories">
+        <a href="./products.html?cat=fragrance" class="category reveal">
+          <div class="category-art"><img src="/images/products/kayali-sweet-obsessions.jpg" alt="سيت عطور كايالي Sweet Obsessions" loading="lazy" decoding="async" /></div>
+          <h3>العطور</h3>
+          <p>بادي مست، سيتات عطور ودهون فاخرة من أشهر الماركات العالمية.</p>
+        </a>
+        <a href="./products.html?cat=body" class="category reveal">
+          <div class="category-art"><img src="/images/products/body-butter-bodyshop.jpg" alt="زبدة الجسم من ذا بودي شوب" loading="lazy" decoding="async" /></div>
+          <h3>العناية بالجسم</h3>
+          <p>زبدات جسم ومرطّبات بتركيبات غنية تمنح ترطيباً يدوم طويلاً.</p>
+        </a>
+        <a href="./products.html?cat=hair" class="category reveal">
+          <div class="category-art"><img src="/images/categories/hair-kerastase.jpg" alt="سيت كيراستاس جينيسيس للعناية بالشعر" style="object-position: center 22%" loading="lazy" decoding="async" /></div>
+          <h3>العناية بالشعر</h3>
+          <p>سكراب وعناية بفروة الرأس لشعر منعش وصحي من الجذور.</p>
+        </a>
+        <a href="./products.html?cat=makeup" class="category reveal">
+          <div class="category-art"><img src="/images/products/fenty-beauty-set.jpg" alt="سيت مكياج فينتي بيوتي" loading="lazy" decoding="async" /></div>
+          <h3>المكياج</h3>
+          <p>هايلايتر، ماسكارا وغلوس بسيتات جاهزة لإطلالة كاملة.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer"></footer>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

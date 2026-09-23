@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wishes | ويشز — مكياج وعناية بالبشرة</title>
+  <meta name="description" content="Wishes — متجر مكياج ومنتجات عناية بالبشرة في سوريا. منتجات أصلية، أسعار مناسبة، وطلب سهل عبر إنستغرام." />
+  <meta name="theme-color" content="#c2477f" />
+  <link rel="icon" type="image/png" href="/images/wishes-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body data-page="home">
+
+<!-- Icon sprite, injected before the markup below is parsed. -->
+<script src="/sprite.js"></script>
+
+<!-- Header, footer and floating button are rendered by src/layout.js -->
+<header class="site-header" id="top"></header>
+
+<main>
+  <!-- Marquee -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>مكياج</span><span>✦</span><span>عناية بالبشرة</span><span>✦</span><span>Wishes</span><span>✦</span><span>Lashango</span><span>✦</span><span>Aliona</span><span>✦</span><span>IBRAQ</span><span>✦</span><span>واقي شمس</span><span>✦</span>
+      <span>مكياج</span><span>✦</span><span>عناية بالبشرة</span><span>✦</span><span>Wishes</span><span>✦</span><span>Lashango</span><span>✦</span><span>Aliona</span><span>✦</span><span>IBRAQ</span><span>✦</span><span>واقي شمس</span><span>✦</span>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-text reveal">
+        <p class="eyebrow">الوكيل الحصري لـ Lashango و Aliona و IBRAQ في سوريا</p>
+        <h1>
+          جمالك يبدأ
+          <span class="accent">بأمنية</span>
+        </h1>
+        <p class="lead">
+          في <strong>Wishes</strong> نختار لكِ أفضل منتجات المكياج والعناية بالبشرة بعناية،
+          لتحصلي على إطلالة تشبهك وبشرة صحية ومشرقة كل يوم.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="./products.html">تسوّقي الآن</a>
+          <a class="btn btn-ghost" href="https://ig.me/m/wishes.sy" target="_blank" rel="noopener">
+            <svg class="icon"><use href="#i-instagram" /></svg>
+            اطلبي عبر إنستغرام
+          </a>
+        </div>
+        <ul class="hero-badges">
+          <li><strong>حصرياً</strong> في سوريا</li>
+          <li><strong>100%</strong> منتجات أصلية</li>
+          <li><strong>استشارة</strong> مجانية لبشرتك</li>
+          <li><strong>توصيل</strong> لباب البيت</li>
+        </ul>
+      </div>
+
+      <div class="hero-visual reveal" aria-hidden="true">
+        <div class="blob"></div>
+        <div class="hero-card">
+          <img src="/images/wishes-logo.png" alt="" class="hero-logo" />
+        </div>
+        <svg class="float f1"><use href="#i-lipstick" /></svg>
+        <svg class="float f2"><use href="#i-serum" /></svg>
+        <svg class="float f3"><use href="#i-palette" /></svg>
+        <svg class="float f4"><use href="#i-cream" /></svg>
+        <svg class="sparkle s1"><use href="#i-sparkle" /></svg>
+        <svg class="sparkle s2"><use href="#i-sparkle" /></svg>
+        <svg class="sparkle s3"><use href="#i-sparkle" /></svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured products -->
+  <!-- Scrolling down through this section slides the products sideways, one at a time. -->
+  <section class="showcase" id="featured" aria-roledescription="carousel" aria-label="منتجات تحبّينها">
+    <div class="showcase-pin">
+      <div class="container showcase-head">
+        <div>
+          <p class="eyebrow">الأكثر طلباً</p>
+          <h2>منتجات تحبّينها</h2>
+        </div>
+        <div class="showcase-controls">
+          <span class="showcase-counter" aria-live="polite"><strong id="showcase-current">01</strong> / <span id="showcase-total">01</span></span>
+          <button type="button" class="showcase-arrow" data-showcase="prev" aria-label="المنتج السابق">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
+          </button>
+          <button type="button" class="showcase-arrow" data-showcase="next" aria-label="المنتج التالي">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6" /></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="showcase-viewport">
+        <div class="showcase-track" id="showcase-track"></div>
+      </div>
+
+      <div class="container showcase-foot">
+        <div class="showcase-dots" id="showcase-dots"></div>
+        <a class="showcase-all" href="./products.html">عرض كل المنتجات ←</a>
+      </div>
+    </div>
+    <div class="showcase-snaps" id="showcase-snaps" aria-hidden="true"></div>
+  </section>
+
+  <!-- Instagram CTA -->
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="cta reveal">
+        <svg class="sparkle cta-s1"><use href="#i-sparkle" /></svg>
+        <svg class="sparkle cta-s2"><use href="#i-sparkle" /></svg>
+        <p class="eyebrow">تواصلي معنا</p>
+        <h2>أمنيتك القادمة بانتظارك</h2>
+        <p class="section-sub">
+          تابعي أحدث المنتجات والعروض على إنستغرام، وراسلينا لأي استفسار أو طلب — نرد عليكِ بأسرع وقت.
+        </p>
+        <div class="cta-actions">
+          <a class="btn btn-primary" href="https://www.instagram.com/wishes.sy/" target="_blank" rel="noopener">
+            <svg class="icon"><use href="#i-instagram" /></svg>
+            @wishes.sy
+          </a>
+          <a class="btn btn-ghost" href="https://ig.me/m/wishes.sy" target="_blank" rel="noopener">
+            أرسلي رسالة مباشرة
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer"></footer>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>
