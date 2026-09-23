@@ -8,8 +8,9 @@ export const CURRENCY = '$';
 
 // Sham Cash wallet shown at checkout. Leave `account` empty and customers are
 // told the account will be sent to them over Instagram instead.
+// TODO: replace the placeholder with the store's real Sham Cash account.
 export const SHAM_CASH = {
-  account: '',
+  account: '0000 0000 0000',
   name: 'Wishes',
 };
 
