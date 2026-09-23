@@ -5,6 +5,7 @@
 
 import { formatPrice } from './data.js';
 import { supabase } from './supabase.js';
+import { confirmDialog } from './ui.js';
 
 const STATUS = {
   new: 'جديد',
@@ -309,12 +310,34 @@ async function updateOrder(id, changes) {
   renderOrders();
 }
 
-root.addEventListener('change', (event) => {
+// Every status/payment change is confirmed first, so a stray tap can't
+// tell a customer their order is on the way when it isn't.
+function confirmTitle(order, field, value) {
+  const who = `${esc(order.id)} — ${esc(order.name)}`;
+  if (field === 'paid') {
+    return value
+      ? `تأكيد أن الطلب ${who} <strong>مدفوع</strong>؟`
+      : `إرجاع الطلب ${who} إلى <strong>غير مدفوع</strong>؟`;
+  }
+  return `تغيير حالة الطلب ${who} إلى <strong>«${STATUS[value]}»</strong>؟`;
+}
+
+root.addEventListener('change', async (event) => {
   const control = event.target.closest('[data-field]');
   const card = control && control.closest('[data-order]');
   if (!card) return;
+  const order = orders.find((o) => o.id === card.dataset.order);
+  const field = control.dataset.field;
   const value = control.type === 'checkbox' ? control.checked : control.value;
-  updateOrder(card.dataset.order, { [control.dataset.field]: value });
+
+  const answer = await confirmDialog({
+    title: confirmTitle(order, field, value),
+    confirmLabel: 'نعم، احفظي التغيير',
+    cancelLabel: 'تراجع',
+    danger: value === 'cancelled' || (field === 'paid' && !value),
+  });
+  if (answer) updateOrder(order.id, { [field]: value });
+  else renderOrders(); // put the select/switch back as it was
 });
 
 document.getElementById('admin-refresh').addEventListener('click', loadDashboard);
