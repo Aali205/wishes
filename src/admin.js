@@ -61,35 +61,27 @@ function showLogin(error = '') {
           <span>البريد الإلكتروني</span>
           <input name="email" type="email" dir="ltr" autocomplete="username" required />
         </label>
+        <label class="field">
+          <span>كلمة المرور</span>
+          <input name="password" type="password" dir="ltr" autocomplete="current-password" required />
+        </label>
         <p class="field-error" role="alert">${esc(error)}</p>
-        <button type="submit" class="btn btn-primary">أرسلي رابط الدخول</button>
-        <p class="checkout-hint">سيصلك رابط على بريدك، افتحيه على هذا الجهاز للدخول مباشرة.</p>
+        <button type="submit" class="btn btn-primary">دخول</button>
       </form>
     </section>`;
 
   const form = root.querySelector('form');
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
-    const email = form.elements.email.value.trim();
     const button = form.querySelector('button');
     button.disabled = true;
-    // Only existing (invited) users get a link; nobody can sign up from here.
-    const { error: otpError } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        shouldCreateUser: false,
-        emailRedirectTo: location.href.split(/[?#]/)[0],
-      },
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: form.elements.email.value.trim(),
+      password: form.elements.password.value,
     });
     button.disabled = false;
-    if (otpError) {
-      showLogin('تعذّر إرسال الرابط. تأكدي من البريد أو حاولي بعد دقائق.');
-    } else {
-      message(
-        'تفقّدي بريدك',
-        `أرسلنا رابط الدخول إلى ${esc(email)}. افتحيه على هذا الجهاز.`,
-      );
-    }
+    if (signInError) showLogin('البريد أو كلمة المرور غير صحيحة.');
+    else loadDashboard();
   });
 }
 
