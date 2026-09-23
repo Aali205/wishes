@@ -11,5 +11,8 @@
   "devDependencies": {
     "prettier": "^3.9.5",
     "vite": "^8.1.5"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.117.1"
   }
 }

@@ -50,7 +50,38 @@ function saveDraft(data) {
 }
 
 function orderNumber() {
-  return `W-${Date.now().toString(36).toUpperCase().slice(-6)}`;
+  const time = Date.now().toString(36).slice(-5);
+  const random = Math.random().toString(36).slice(2, 5);
+  return `W-${time}${random}`.toUpperCase();
+}
+
+/** Saves the order for the admin dashboard. Returns false if it couldn't. */
+async function saveOrder(data, lines, total) {
+  try {
+    const { supabase } = await import('./supabase.js');
+    if (!supabase) return false;
+    const { error } = await supabase.from('orders').insert({
+      id: data.id,
+      items: lines.map((line) => ({
+        id: line.product.id,
+        name: line.product.name,
+        qty: line.qty,
+        price: line.product.price,
+        total: line.total,
+      })),
+      total,
+      name: data.name,
+      phone: data.phone,
+      city: data.city,
+      area: data.area,
+      notes: data.notes || null,
+      payment: data.payment,
+      txn: data.txn || null,
+    });
+    return !error;
+  } catch {
+    return false;
+  }
 }
 
 function orderText(data, lines, total) {
@@ -174,8 +205,8 @@ function formMarkup(draft) {
         </form>
 
         <div class="checkout-done" hidden>
-          <h3>تم تجهيز طلبك <span data-order-id></span></h3>
-          <p>نسخنا تفاصيل الطلب لكِ. الصقيها في رسالة إلينا على إنستغرام واضغطي إرسال، وسنؤكد طلبك ونحدد موعد التوصيل.</p>
+          <h3><span data-done-title>تم تجهيز طلبك</span> <span data-order-id></span></h3>
+          <p data-done-note></p>
           <textarea class="checkout-message" rows="12" readonly></textarea>
           <div class="invoice-actions">
             <a class="btn btn-primary" href="${INSTAGRAM_DM}" target="_blank" rel="noopener">افتحي إنستغرام</a>
@@ -222,6 +253,7 @@ export function mountCheckout(root) {
   const done = root.querySelector('.checkout-done');
   const message = root.querySelector('.checkout-message');
   const shamPanel = root.querySelector('.shamcash-panel');
+  const submit = form.querySelector('[type="submit"]');
 
   for (const key of ['name', 'phone', 'area']) {
     if (draft[key]) form.elements[key].value = draft[key];
@@ -269,13 +301,25 @@ export function mountCheckout(root) {
     const total = lines.reduce((sum, line) => sum + line.total, 0);
     const text = orderText(data, lines, total);
 
+    submit.disabled = true;
+    submit.textContent = 'جارٍ الإرسال…';
+    const saved = await saveOrder(data, lines, total);
+    submit.disabled = false;
+    submit.textContent = 'إرسال الطلب';
+
     message.value = text;
     root.querySelector('[data-order-id]').textContent = data.id;
+    root.querySelector('[data-done-title]').textContent = saved
+      ? 'تم استلام طلبك'
+      : 'تم تجهيز طلبك';
+    root.querySelector('[data-done-note]').textContent = saved
+      ? 'وصلنا طلبك وسنتواصل معكِ على رقمك لتأكيده وتحديد موعد التوصيل. يمكنكِ أيضاً إرسال التفاصيل لنا على إنستغرام لتأكيد أسرع.'
+      : 'نسخنا تفاصيل الطلب لكِ. الصقيها في رسالة إلينا على إنستغرام واضغطي إرسال، وسنؤكد طلبك ونحدد موعد التوصيل.';
     form.hidden = true;
     done.hidden = false;
     done.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-    if (await copy(text)) toast('تم نسخ الطلب، الصقيه في رسالة إنستغرام.');
+    if (await copy(text)) toast('تم نسخ تفاصيل الطلب.');
   });
 
   root.addEventListener('click', async (event) => {

@@ -2408,3 +2408,284 @@ html:has(.showcase) {
 @media (prefers-reduced-motion: reduce) {
     .hero-visual { --p: 1 !important; }
 }
+
+/* ---------- Admin dashboard ---------- */
+.admin-body {
+    min-height: 100vh;
+    background: var(--cream);
+}
+
+.admin-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--white);
+    box-shadow: var(--shadow-sm);
+}
+
+.admin-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-block: 12px;
+}
+
+.admin-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--plum-700);
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.admin-brand img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.admin-header-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.admin-header-actions[hidden] {
+    display: none;
+}
+
+.admin-main {
+    display: grid;
+    gap: 18px;
+    padding-block: 24px 60px;
+}
+
+#admin-root {
+    display: grid;
+    gap: 18px;
+}
+
+.admin-card {
+    padding: 20px;
+    border-radius: var(--radius);
+    background: var(--white);
+    box-shadow: var(--shadow-sm);
+}
+
+.admin-login,
+.admin-message {
+    width: min(100%, 440px);
+    margin: 40px auto 0;
+}
+
+.admin-login h1,
+.admin-message h1 {
+    margin: 0 0 18px;
+    font-size: 24px;
+}
+
+.admin-login form {
+    display: grid;
+    gap: 14px;
+}
+
+.admin-message p,
+.admin-loading,
+.admin-empty {
+    margin: 0;
+    color: var(--muted);
+}
+
+.admin-loading,
+.admin-empty {
+    padding: 30px 0;
+    text-align: center;
+}
+
+.admin-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.admin-stat {
+    display: grid;
+    gap: 4px;
+    padding: 18px;
+    border-radius: 18px;
+    background: var(--white);
+    box-shadow: var(--shadow-sm);
+}
+
+.admin-stat span {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.admin-stat strong {
+    color: var(--pink-600);
+    font-family: var(--font-display);
+    font-size: 28px;
+}
+
+.admin-filters {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.admin-orders {
+    display: grid;
+    gap: 14px;
+}
+
+.admin-order {
+    display: grid;
+    gap: 16px;
+    border-inline-start: 5px solid var(--pink-400);
+}
+
+.admin-order[data-status="confirmed"] { border-inline-start-color: #3b82f6; }
+.admin-order[data-status="shipped"] { border-inline-start-color: #d97706; }
+.admin-order[data-status="delivered"] { border-inline-start-color: #16a34a; }
+.admin-order[data-status="cancelled"] { border-inline-start-color: #9ca3af; opacity: 0.75; }
+
+.admin-order-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.admin-order-head h2 {
+    margin: 0;
+    font-size: 18px;
+    direction: ltr;
+    text-align: end;
+}
+
+.admin-order-head time {
+    color: var(--muted);
+    font-size: 13.5px;
+}
+
+.admin-order-total {
+    color: var(--pink-600);
+    font-family: var(--font-display);
+    font-size: 22px;
+}
+
+.admin-order-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 18px;
+}
+
+.admin-order-info {
+    margin: 0;
+    display: grid;
+    gap: 8px;
+}
+
+.admin-order-info div {
+    display: grid;
+    grid-template-columns: 70px minmax(0, 1fr);
+    gap: 10px;
+}
+
+.admin-order-info dt {
+    color: var(--muted);
+}
+
+.admin-order-info dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.admin-order-info a {
+    color: var(--pink-600);
+    font-weight: 700;
+}
+
+.admin-order-items {
+    margin: 0;
+    padding: 12px 14px;
+    list-style: none;
+    display: grid;
+    gap: 6px;
+    border-radius: 14px;
+    background: var(--pink-50);
+    font-size: 14.5px;
+}
+
+.admin-order-items li {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.admin-order-items span {
+    font-weight: 700;
+}
+
+.admin-order-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--pink-100);
+}
+
+.admin-order-controls .field {
+    min-width: 200px;
+}
+
+.admin-paid {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 16px;
+    border: 1.5px solid var(--pink-200);
+    border-radius: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    color: #c53030;
+}
+
+.admin-paid:has(input:checked) {
+    border-color: #16a34a;
+    background: #ecfdf3;
+    color: #15803d;
+}
+
+.admin-paid input {
+    width: 20px;
+    height: 20px;
+    accent-color: #16a34a;
+}
+
+@media (max-width: 860px) {
+    .admin-stats,
+    .admin-filters {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .admin-order-body {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 520px) {
+    .admin-brand span {
+        display: none;
+    }
+
+    .admin-order-controls .field {
+        flex: 1 1 100%;
+    }
+}
