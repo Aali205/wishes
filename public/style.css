@@ -2689,3 +2689,393 @@ html:has(.showcase) {
         flex: 1 1 100%;
     }
 }
+
+/* ---------- Order journey (رحلة طلباتي) ---------- */
+.journey-list {
+    display: grid;
+    gap: 20px;
+}
+
+.journey-loading {
+    padding: 30px 0;
+    color: var(--muted);
+    text-align: center;
+}
+
+.journey-card {
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--white);
+    box-shadow: var(--shadow-md);
+}
+
+.journey-scene {
+    display: grid;
+    place-items: center;
+    padding: 16px;
+    background: linear-gradient(160deg, var(--pink-50), var(--pink-100));
+}
+
+.journey-card.is-delivered .journey-scene {
+    background: linear-gradient(160deg, #f0fdf4, #dcfce7);
+}
+
+.journey-card.is-cancelled .journey-scene {
+    background: #f4f1f3;
+}
+
+.journey-body {
+    display: grid;
+    gap: 18px;
+    padding: 22px 24px;
+}
+
+.journey-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.journey-head h2 {
+    margin: 0 0 4px;
+    font-size: 22px;
+}
+
+.journey-head p {
+    margin: 0;
+    color: var(--muted);
+}
+
+.journey-badge {
+    flex-shrink: 0;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #fff4e5;
+    color: #b45309;
+    font-size: 13.5px;
+    font-weight: 700;
+}
+
+.journey-badge.is-paid {
+    background: #ecfdf3;
+    color: #15803d;
+}
+
+/* Timeline: a bar that fills up to the current step. */
+.journey-track {
+    position: relative;
+    padding-top: 2px;
+}
+
+.journey-bar {
+    position: absolute;
+    top: 10px;
+    inset-inline: 12.5%;
+    height: 4px;
+    border-radius: 4px;
+    background: var(--pink-100);
+}
+
+.journey-bar span {
+    display: block;
+    width: calc(var(--progress) * 100%);
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(270deg, var(--pink-400), var(--pink-600));
+    animation: journey-fill 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.journey-steps {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    text-align: center;
+    font-size: 13.5px;
+    color: var(--muted);
+}
+
+.journey-step {
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+}
+
+.journey-dot {
+    width: 20px;
+    height: 20px;
+    border: 3px solid var(--pink-200);
+    border-radius: 50%;
+    background: var(--white);
+}
+
+.journey-step.is-done .journey-dot {
+    border-color: var(--pink-500);
+    background: var(--pink-500);
+}
+
+.journey-step.is-current {
+    color: var(--plum-700);
+    font-weight: 700;
+}
+
+.journey-step.is-current .journey-dot {
+    border-color: var(--pink-500);
+    background: var(--pink-500);
+    animation: journey-pulse 1.8s ease-out infinite;
+}
+
+.journey-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.journey-meta strong {
+    color: var(--ink);
+}
+
+.journey-items {
+    margin: 0;
+    padding: 12px 14px;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    border-radius: 14px;
+    background: var(--pink-50);
+    font-size: 14px;
+}
+
+.track-form {
+    margin-top: 28px;
+}
+
+.track-form h2 {
+    margin-bottom: 6px;
+}
+
+.track-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+    align-items: end;
+    gap: 14px;
+    margin-top: 14px;
+}
+
+.track-form .field-error {
+    margin: 10px 0 0;
+}
+
+/* Scene artwork */
+.scene {
+    width: 100%;
+    max-width: 170px;
+    height: auto;
+    overflow: visible;
+}
+
+.scene .fill-main { fill: var(--pink-500); }
+.scene .fill-soft { fill: var(--pink-200); }
+.scene .fill-deep { fill: var(--plum-700); }
+.scene .fill-white { fill: var(--white); }
+.scene .fill-muted { fill: #c9bcc3; }
+.scene .stroke-main { fill: none; stroke: var(--pink-500); stroke-width: 5; stroke-linecap: round; }
+.scene .stroke-white { stroke: var(--white); stroke-width: 3; stroke-linecap: round; }
+.scene .stroke-white.thick { stroke-width: 7; }
+
+/* new: the bag bobs while sparkles twinkle */
+.scene-bob {
+    animation: scene-bob 2.4s ease-in-out infinite;
+}
+
+.scene-spark {
+    fill: var(--pink-400);
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: scene-twinkle 1.8s ease-in-out infinite;
+}
+
+.scene-spark.s2 { animation-delay: 0.6s; }
+.scene-spark.s3 { animation-delay: 1.2s; }
+
+/* confirmed: a ring ripples out and the tick draws itself */
+.scene-ring {
+    fill: none;
+    stroke: var(--pink-300);
+    stroke-width: 4;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: scene-ripple 2s ease-out infinite;
+}
+
+.scene-check {
+    fill: none;
+    stroke: var(--white);
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 60;
+    stroke-dashoffset: 60;
+    animation: scene-draw 0.9s 0.3s ease-out forwards;
+}
+
+/* shipped: the van rumbles along a moving road */
+.scene-road {
+    stroke: var(--pink-300);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-dasharray: 14 10;
+    animation: scene-road 0.6s linear infinite;
+}
+
+.scene-drive {
+    animation: scene-drive 3.2s ease-in-out infinite;
+}
+
+.scene-rumble {
+    animation: scene-rumble 0.35s ease-in-out infinite alternate;
+}
+
+.scene-wheel {
+    animation: scene-spin 0.6s linear infinite;
+}
+
+.scene-speed {
+    stroke: var(--pink-400);
+    stroke-width: 4;
+    stroke-linecap: round;
+    animation: scene-speed 0.8s ease-in-out infinite;
+}
+
+.scene-speed.d2 { animation-delay: 0.3s; }
+
+/* delivered: the lid hops and confetti falls */
+.scene-lid {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: scene-lid 2.2s ease-in-out infinite;
+}
+
+.confetti {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: scene-confetti 2.4s ease-in infinite;
+}
+
+.confetti.c1 { fill: var(--pink-400); }
+.confetti.c2 { fill: #f59e0b; animation-delay: 0.4s; }
+.confetti.c3 { fill: #22c55e; animation-delay: 0.9s; }
+.confetti.c4 { fill: var(--plum-700); animation-delay: 1.3s; }
+.confetti.c5 { fill: #60a5fa; animation-delay: 1.7s; }
+
+/* cancelled: a slow, calm breathe */
+.scene-cancelled {
+    animation: scene-breathe 3s ease-in-out infinite;
+}
+
+@keyframes journey-fill {
+    from { width: 0; }
+}
+
+@keyframes journey-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(194, 71, 127, 0.45); }
+    100% { box-shadow: 0 0 0 12px rgba(194, 71, 127, 0); }
+}
+
+@keyframes scene-bob {
+    50% { transform: translateY(-6px); }
+}
+
+@keyframes scene-twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(0.6) rotate(0deg); }
+    50% { opacity: 1; transform: scale(1.1) rotate(20deg); }
+}
+
+@keyframes scene-ripple {
+    0% { opacity: 0.9; transform: scale(0.8); }
+    100% { opacity: 0; transform: scale(1.3); }
+}
+
+@keyframes scene-draw {
+    to { stroke-dashoffset: 0; }
+}
+
+@keyframes scene-road {
+    to { stroke-dashoffset: -24; }
+}
+
+@keyframes scene-drive {
+    0%, 100% { transform: translateX(-6px); }
+    50% { transform: translateX(6px); }
+}
+
+@keyframes scene-rumble {
+    to { transform: translateY(-2px); }
+}
+
+@keyframes scene-spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes scene-speed {
+    0% { opacity: 0; transform: translateX(10px); }
+    40% { opacity: 1; }
+    100% { opacity: 0; transform: translateX(-14px); }
+}
+
+@keyframes scene-lid {
+    0%, 60%, 100% { transform: translateY(0) rotate(0deg); }
+    70% { transform: translateY(-14px) rotate(-6deg); }
+    80% { transform: translateY(-10px) rotate(4deg); }
+}
+
+@keyframes scene-confetti {
+    0% { opacity: 0; transform: translateY(-10px) rotate(0deg); }
+    15% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(70px) rotate(300deg); }
+}
+
+@keyframes scene-breathe {
+    50% { transform: scale(0.94); opacity: 0.8; }
+}
+
+@media (max-width: 720px) {
+    .journey-card {
+        grid-template-columns: 1fr;
+    }
+
+    .journey-scene {
+        padding: 18px 16px 10px;
+    }
+
+    .journey-scene .scene {
+        max-width: 140px;
+    }
+
+    .journey-body {
+        padding: 18px 16px;
+    }
+
+    .journey-head {
+        flex-direction: column;
+    }
+
+    .track-fields {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .journey-card * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}

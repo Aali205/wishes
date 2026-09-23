@@ -12,6 +12,7 @@ import {
 } from './data.js';
 import * as cart from './cart.js';
 import { mountCheckout } from './checkout.js';
+import { initOrders } from './orders.js';
 import { mountLayout, toast } from './layout.js';
 import {
   confirmDialog,
@@ -427,6 +428,7 @@ const pages = {
   products: initProducts,
   product: initProduct,
   cart: initCart,
+  orders: initOrders,
 };
 
 if (pages[page]) pages[page]();

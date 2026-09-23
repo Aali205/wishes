@@ -14,6 +14,7 @@ const NAV_LINKS = [
   { key: 'routine', href: './routine.html', label: 'روتين البشرة' },
   { key: 'about', href: './about.html', label: 'من نحن' },
   { key: 'contact', href: './contact.html', label: 'تواصلي معنا' },
+  { key: 'orders', href: './my-orders.html', label: 'رحلة طلباتي' },
 ];
 
 // Pages that should light up a nav entry they are not named after.

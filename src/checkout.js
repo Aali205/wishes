@@ -6,6 +6,7 @@
 import { INSTAGRAM_DM, SHAM_CASH, formatPrice } from './data.js';
 import * as cart from './cart.js';
 import { toast } from './layout.js';
+import { rememberOrder } from './orders.js';
 
 const DRAFT_KEY = 'wishes-customer-v1';
 
@@ -209,7 +210,8 @@ function formMarkup(draft) {
           <p data-done-note></p>
           <textarea class="checkout-message" rows="12" readonly></textarea>
           <div class="invoice-actions">
-            <a class="btn btn-primary" href="${INSTAGRAM_DM}" target="_blank" rel="noopener">افتحي إنستغرام</a>
+            <a class="btn btn-primary" href="./my-orders.html" data-track-link hidden>تابعي رحلة طلبك</a>
+            <a class="btn btn-ghost" href="${INSTAGRAM_DM}" target="_blank" rel="noopener">افتحي إنستغرام</a>
             <button type="button" class="btn btn-ghost" data-copy-order>نسخ الطلب مرة أخرى</button>
             <button type="button" class="btn btn-ghost" data-finish>تم الإرسال، أفرغي السلة</button>
           </div>
@@ -306,6 +308,11 @@ export function mountCheckout(root) {
     const saved = await saveOrder(data, lines, total);
     submit.disabled = false;
     submit.textContent = 'إرسال الطلب';
+
+    if (saved) rememberOrder(data.id, data.phone);
+    const trackLink = root.querySelector('[data-track-link]');
+    trackLink.hidden = !saved;
+    trackLink.href = `./my-orders.html?id=${encodeURIComponent(data.id)}`;
 
     message.value = text;
     root.querySelector('[data-order-id]').textContent = data.id;

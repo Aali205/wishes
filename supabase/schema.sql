@@ -74,3 +74,5 @@ grant execute on function public.is_admin() to anon, authenticated;
 -- Dashboard admins (lower-case emails). Add the store owner's email here too.
 insert into public.admins (email) values ('alihussinakil@gmail.com')
 on conflict do nothing;
+
+-- Customer order tracking lives in track_order.sql (run it after this file).

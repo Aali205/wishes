@@ -13,6 +13,7 @@ const pages = [
   'contact',
   'cart',
   'admin',
+  'my-orders',
 ];
 
 export default defineConfig({
