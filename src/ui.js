@@ -3,7 +3,13 @@
 // cart pages.
 // ---------------------------------------------------------------------------
 
-import { CATEGORY_LABELS, formatPrice, getProduct } from './data.js';
+import {
+  CATEGORY_LABELS,
+  esc,
+  formatPrice,
+  getProduct,
+  isSoldOut,
+} from './data.js';
 import * as cart from './cart.js';
 import { toast } from './layout.js';
 
@@ -16,22 +22,34 @@ export function qtyStepper(value = 1, name = 'الكمية') {
       </div>`;
 }
 
+/** The corner badge: "sold out" wins over the product's own tag. */
+export function tagMarkup(product) {
+  if (isSoldOut(product)) {
+    return '<span class="product-tag is-sold-out">نفدت الكمية</span>';
+  }
+  return product.tag ? `<span class="product-tag">${esc(product.tag)}</span>` : '';
+}
+
 export function productCard(product, index = 0) {
   const href = `./product.html?id=${encodeURIComponent(product.id)}`;
   return `
-      <article class="product" style="animation-delay:${index * 60}ms">
+      <article class="product${isSoldOut(product) ? ' is-sold-out' : ''}" style="animation-delay:${index * 60}ms">
         <a class="product-media" href="${href}">
-          ${product.tag ? `<span class="product-tag">${product.tag}</span>` : ''}
-          <img src="${product.image}" alt="${product.name}" loading="lazy" decoding="async" />
+          ${tagMarkup(product)}
+          <img src="${esc(product.image)}" alt="${esc(product.name)}" loading="lazy" decoding="async" />
         </a>
         <div class="product-body">
           <span class="product-cat">${CATEGORY_LABELS[product.category]}</span>
-          <h3><a href="${href}">${product.name}</a></h3>
-          <p>${product.desc}</p>
+          <h3><a href="${href}">${esc(product.name)}</a></h3>
+          <p>${esc(product.desc)}</p>
           <span class="product-price">${formatPrice(product.price)}</span>
           <div class="product-actions">
-            ${qtyStepper()}
-            <button type="button" class="btn btn-primary" data-add="${product.id}">أضيفي إلى السلة</button>
+            ${
+              isSoldOut(product)
+                ? '<button type="button" class="btn btn-ghost" disabled>نفدت الكمية</button>'
+                : `${qtyStepper()}
+            <button type="button" class="btn btn-primary" data-add="${esc(product.id)}">أضيفي إلى السلة</button>`
+            }
           </div>
         </div>
       </article>`;
@@ -46,16 +64,20 @@ export function showcaseSlide(product, index, total) {
         <div class="showcase-body">
           <span class="showcase-num" aria-hidden="true">${num}</span>
           <span class="product-cat">${CATEGORY_LABELS[product.category]}</span>
-          <h3><a href="${href}">${product.name}</a></h3>
-          <p>${product.desc}</p>
+          <h3><a href="${href}">${esc(product.name)}</a></h3>
+          <p>${esc(product.desc)}</p>
         </div>
         <a class="showcase-media" href="${href}" tabindex="-1">
-          ${product.tag ? `<span class="product-tag">${product.tag}</span>` : ''}
-          <img src="${product.image}" alt="${product.name}" loading="${index < 2 ? 'eager' : 'lazy'}" decoding="async" />
+          ${tagMarkup(product)}
+          <img src="${esc(product.image)}" alt="${esc(product.name)}" loading="${index < 2 ? 'eager' : 'lazy'}" decoding="async" />
         </a>
         <div class="showcase-buy">
           <span class="product-price">${formatPrice(product.price)}</span>
-          <button type="button" class="btn btn-primary" data-add="${product.id}" data-buy>اشتري الآن</button>
+          ${
+            isSoldOut(product)
+              ? '<button type="button" class="btn btn-ghost" disabled>نفدت الكمية</button>'
+              : `<button type="button" class="btn btn-primary" data-add="${esc(product.id)}" data-buy>اشتري الآن</button>`
+          }
           <a class="showcase-details" href="${href}">تفاصيل المنتج</a>
         </div>
       </article>`;
@@ -96,9 +118,9 @@ export function confirmDialog({
   dialog.innerHTML = `
       <form method="dialog" class="confirm-box">
         <img class="confirm-logo" src="./images/wishes-logo.png" alt="Wishes" width="585" height="298" />
-        ${product ? `<img class="confirm-img" src="${product.image}" alt="" />` : ''}
+        ${product ? `<img class="confirm-img" src="${esc(product.image)}" alt="" />` : ''}
         <h2 class="confirm-title">${title}</h2>
-        ${product ? `<p class="confirm-product">${product.name} — <strong>${formatPrice(product.price)}</strong></p>` : ''}
+        ${product ? `<p class="confirm-product">${esc(product.name)} — <strong>${formatPrice(product.price)}</strong></p>` : ''}
         ${qty ? `<div class="confirm-qty"><span class="qty-label">الكمية</span>${qtyStepper(qty)}</div>` : ''}
         <div class="confirm-actions">
           <button value="ok" class="btn ${danger ? 'btn-danger' : 'btn-primary'}">${confirmLabel}</button>

@@ -6,10 +6,13 @@
 import {
   CATEGORY_LABELS,
   INSTAGRAM_DM,
+  esc,
   formatPrice,
   getProduct,
+  isSoldOut,
   products,
 } from './data.js';
+import { loadCatalog } from './catalog.js';
 import * as cart from './cart.js';
 import { mountCheckout } from './checkout.js';
 import { initOrders } from './orders.js';
@@ -17,12 +20,16 @@ import { mountLayout, toast } from './layout.js';
 import {
   confirmDialog,
   qtyStepper,
+  tagMarkup,
   renderGrid,
   setupCardActions,
   showcaseSlide,
 } from './ui.js';
 
 const page = document.body.dataset.page || 'home';
+
+// Prices, stock and new products come from the database (see catalog.js).
+await loadCatalog();
 
 mountLayout(page);
 setupCardActions();
@@ -241,6 +248,7 @@ function initProduct() {
   }
 
   document.title = `${product.name} | Wishes`;
+  const soldOut = isSoldOut(product);
 
   root.innerHTML = `
       <nav class="breadcrumb" aria-label="مسار التصفح">
@@ -253,20 +261,24 @@ function initProduct() {
 
       <div class="product-detail">
         <div class="product-detail-media">
-          ${product.tag ? `<span class="product-tag">${product.tag}</span>` : ''}
-          <img src="${product.image}" alt="${product.name}" />
+          ${tagMarkup(product)}
+          <img src="${esc(product.image)}" alt="${esc(product.name)}" />
         </div>
         <div class="product-detail-body">
           <span class="product-cat">${CATEGORY_LABELS[product.category]}</span>
-          <h1>${product.name}</h1>
-          <p class="lead">${product.desc}</p>
+          <h1>${esc(product.name)}</h1>
+          <p class="lead">${esc(product.desc)}</p>
           <p class="product-detail-price">${formatPrice(product.price)}</p>
-          <p>${product.details || ''}</p>
+          <p>${esc(product.details)}</p>
 
           <div class="product-detail-buy">
-            <span class="qty-label">الكمية</span>
+            ${
+              soldOut
+                ? '<button type="button" class="btn btn-ghost" disabled>نفدت الكمية — راسلينا لنخبرك عند توفره</button>'
+                : `<span class="qty-label">الكمية</span>
             ${qtyStepper()}
-            <button type="button" class="btn btn-primary" data-add="${product.id}">أضيفي إلى السلة</button>
+            <button type="button" class="btn btn-primary" data-add="${esc(product.id)}">أضيفي إلى السلة</button>`
+            }
           </div>
 
           <div class="product-detail-links">
@@ -289,20 +301,20 @@ function initProduct() {
 /* ----------------------------------- cart -------------------------------- */
 
 function cartLineMarkup(line) {
-  const href = `./product.html?id=${line.product.id}`;
+  const href = `./product.html?id=${encodeURIComponent(line.product.id)}`;
   return `
-          <li class="cart-line" data-line="${line.product.id}">
+          <li class="cart-line" data-line="${esc(line.product.id)}">
             <a class="cart-line-media" href="${href}">
-              <img src="${line.product.image}" alt="${line.product.name}" loading="lazy" />
+              <img src="${esc(line.product.image)}" alt="${esc(line.product.name)}" loading="lazy" />
             </a>
             <div class="cart-line-info">
               <span class="product-cat">${CATEGORY_LABELS[line.product.category]}</span>
-              <h3><a href="${href}">${line.product.name}</a></h3>
+              <h3><a href="${href}">${esc(line.product.name)}</a></h3>
               <p class="cart-line-unit">سعر القطعة: ${formatPrice(line.product.price)}</p>
             </div>
-            ${qtyStepper(line.qty, `كمية ${line.product.name}`)}
+            ${qtyStepper(line.qty, `كمية ${esc(line.product.name)}`)}
             <span class="cart-line-total">${formatPrice(line.total)}</span>
-            <button type="button" class="cart-remove" data-remove="${line.product.id}" aria-label="حذف ${line.product.name}">
+            <button type="button" class="cart-remove" data-remove="${esc(line.product.id)}" aria-label="حذف ${esc(line.product.name)}">
               <svg class="icon"><use href="#i-trash" /></svg>
             </button>
           </li>`;
@@ -313,7 +325,7 @@ function invoiceMarkup(lines, pieces, total) {
     .map(
       (line) => `
               <tr>
-                <td>${line.product.name}</td>
+                <td>${esc(line.product.name)}</td>
                 <td>${line.qty}</td>
                 <td>${formatPrice(line.product.price)}</td>
                 <td>${formatPrice(line.total)}</td>

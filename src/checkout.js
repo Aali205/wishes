@@ -3,7 +3,7 @@
 // message that is copied and sent to us over Instagram (the site has no server).
 // ---------------------------------------------------------------------------
 
-import { INSTAGRAM_DM, SHAM_CASH, formatPrice } from './data.js';
+import { INSTAGRAM_DM, SHAM_CASH, formatPrice, getProduct } from './data.js';
 import * as cart from './cart.js';
 import { toast } from './layout.js';
 import { rememberOrder } from './orders.js';
@@ -56,7 +56,11 @@ function orderNumber() {
   return `W-${time}${random}`.toUpperCase();
 }
 
-/** Saves the order for the admin dashboard. Returns false if it couldn't. */
+/**
+ * Saves the order for the admin dashboard. Resolves to true when saved,
+ * false when the database couldn't be reached, or { unavailable: productId }
+ * when the database refused an item that is sold out or no longer sold.
+ */
 async function saveOrder(data, lines, total) {
   try {
     const { supabase } = await import('./supabase.js');
@@ -79,6 +83,8 @@ async function saveOrder(data, lines, total) {
       payment: data.payment,
       txn: data.txn || null,
     });
+    const refused = error?.message?.match(/^(?:out_of_stock|unavailable):(.+)$/);
+    if (refused) return { unavailable: refused[1] };
     return !error;
   } catch {
     return false;
@@ -308,6 +314,12 @@ export function mountCheckout(root) {
     const saved = await saveOrder(data, lines, total);
     submit.disabled = false;
     submit.textContent = 'إرسال الطلب';
+
+    if (saved?.unavailable) {
+      const name = getProduct(saved.unavailable)?.name || 'أحد المنتجات';
+      toast(`عذراً، ${name} لم يعد متوفراً بالكمية المطلوبة. عدّلي السلة وحاولي مجدداً.`);
+      return;
+    }
 
     if (saved) rememberOrder(data.id, data.phone);
     const trackLink = root.querySelector('[data-track-link]');

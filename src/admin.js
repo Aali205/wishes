@@ -6,6 +6,7 @@
 import { formatPrice } from './data.js';
 import { supabase } from './supabase.js';
 import { confirmDialog } from './ui.js';
+import { mountAssistant, unmountAssistant } from './assistant.js';
 
 const STATUS = {
   new: 'جديد',
@@ -116,6 +117,8 @@ async function loadDashboard() {
     headerActions.hidden = false;
     return;
   }
+
+  mountAssistant(supabase);
 
   try {
     orders = await fetchOrders();
@@ -343,6 +346,7 @@ root.addEventListener('change', async (event) => {
 document.getElementById('admin-refresh').addEventListener('click', loadDashboard);
 document.getElementById('admin-logout').addEventListener('click', async () => {
   await supabase.auth.signOut();
+  unmountAssistant();
   showLogin();
 });
 

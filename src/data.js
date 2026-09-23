@@ -283,4 +283,17 @@ export const products = [
 
 export const getProduct = (id) => products.find((p) => p.id === id);
 
+/** Stock is tracked when it's a number; 0 means sold out. */
+export const isSoldOut = (product) => product.stock === 0;
+
+// Product text comes from the database, so escape it before using innerHTML.
+export const esc = (value) =>
+  String(value ?? '').replace(
+    /[&<>"']/g,
+    (ch) =>
+      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[
+        ch
+      ],
+  );
+
 export const formatPrice = (value) => `${value}${CURRENCY}`;
