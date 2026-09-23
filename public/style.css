@@ -1590,6 +1590,232 @@ h3 {
     font-size: 14.5px;
 }
 
+/* ---------- Checkout ---------- */
+#checkout-root {
+    margin-top: 28px;
+    scroll-margin-top: calc(var(--header-h, 78px) + 16px);
+}
+
+.checkout {
+    padding: 26px;
+    border-radius: var(--radius);
+    background: var(--white);
+    box-shadow: var(--shadow-md);
+}
+
+.checkout h2 {
+    margin: 0 0 18px;
+    font-size: 24px;
+}
+
+.checkout-group {
+    margin: 0 0 22px;
+    padding: 0;
+    border: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.checkout-group legend {
+    margin-bottom: 12px;
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--plum-700);
+}
+
+.field {
+    display: grid;
+    gap: 6px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.field-wide,
+.pay-options,
+.shamcash-panel {
+    grid-column: 1 / -1;
+}
+
+.field input,
+.field select,
+.field textarea,
+.checkout-message {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--pink-200);
+    border-radius: 14px;
+    background: var(--pink-50);
+    color: var(--ink);
+    font: inherit;
+    font-weight: 400;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field textarea,
+.checkout-message {
+    resize: vertical;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+    outline: none;
+    border-color: var(--pink-500);
+    box-shadow: 0 0 0 3px var(--pink-100);
+}
+
+.field [aria-invalid] {
+    border-color: #d94a4a;
+}
+
+.field-error {
+    min-height: 1em;
+    color: #c53030;
+    font-size: 13px;
+}
+
+.field-error:empty {
+    display: none;
+}
+
+.pay-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.pay-option {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 16px;
+    border: 1.5px solid var(--pink-200);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.pay-option:has(input:checked) {
+    border-color: var(--pink-500);
+    background: var(--pink-50);
+}
+
+.pay-option input {
+    margin-top: 4px;
+    accent-color: var(--pink-500);
+}
+
+.pay-option-body {
+    display: grid;
+    gap: 4px;
+}
+
+.pay-option-body small,
+.checkout-hint,
+.checkout-total small {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.shamcash-panel {
+    display: grid;
+    gap: 14px;
+    padding: 18px;
+    border-radius: 16px;
+    background: var(--cream);
+}
+
+.shamcash-panel[hidden] {
+    display: none;
+}
+
+.checkout-hint {
+    margin: 0;
+}
+
+.shamcash-details {
+    margin: 0;
+    display: grid;
+    gap: 10px;
+}
+
+.shamcash-details div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.shamcash-details dt {
+    color: var(--muted);
+}
+
+.shamcash-details dd {
+    margin: 0;
+    font-weight: 700;
+}
+
+.shamcash-account {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    overflow-wrap: anywhere;
+}
+
+.checkout-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding-top: 18px;
+    border-top: 2px solid var(--pink-200);
+}
+
+.checkout-total {
+    margin: 0;
+    font-size: 18px;
+}
+
+.checkout-total strong {
+    color: var(--pink-600);
+    font-family: var(--font-display);
+    font-size: 22px;
+}
+
+.checkout-done h3 {
+    margin: 0 0 8px;
+    font-size: 21px;
+}
+
+.checkout-done p {
+    margin: 0 0 14px;
+    color: var(--muted);
+}
+
+.checkout-message {
+    background: var(--cream);
+    font-size: 14.5px;
+}
+
+@media (max-width: 620px) {
+    .checkout {
+        padding: 20px 16px;
+    }
+
+    .checkout-group,
+    .pay-options {
+        grid-template-columns: 1fr;
+    }
+
+    .checkout-footer .btn {
+        width: 100%;
+    }
+}
+
 /* ---------- Empty states ---------- */
 .empty-state {
     padding: 60px 20px;

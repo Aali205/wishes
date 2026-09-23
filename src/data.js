@@ -6,6 +6,13 @@ export const INSTAGRAM_DM = 'https://ig.me/m/wishes.sy';
 export const INSTAGRAM_PAGE = 'https://www.instagram.com/wishes.sy/';
 export const CURRENCY = '$';
 
+// Sham Cash wallet shown at checkout. Leave `account` empty and customers are
+// told the account will be sent to them over Instagram instead.
+export const SHAM_CASH = {
+  account: '',
+  name: 'Wishes',
+};
+
 export const CATEGORY_LABELS = {
   fragrance: 'عطور',
   body: 'عناية بالجسم',

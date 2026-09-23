@@ -11,6 +11,7 @@ import {
   products,
 } from './data.js';
 import * as cart from './cart.js';
+import { mountCheckout } from './checkout.js';
 import { mountLayout, toast } from './layout.js';
 import {
   confirmDialog,
@@ -286,16 +287,6 @@ function initProduct() {
 
 /* ----------------------------------- cart -------------------------------- */
 
-function invoiceText(lines, total) {
-  const rows = lines.map(
-    (line) =>
-      `• ${line.product.name} × ${line.qty} = ${formatPrice(line.total)}`,
-  );
-  return ['طلب من Wishes:', ...rows, `الإجمالي: ${formatPrice(total)}`].join(
-    '\n',
-  );
-}
-
 function cartLineMarkup(line) {
   const href = `./product.html?id=${line.product.id}`;
   return `
@@ -347,23 +338,26 @@ function invoiceMarkup(lines, pieces, total) {
           </dl>
 
           <div class="invoice-actions">
-            <a class="btn btn-primary" href="${INSTAGRAM_DM}" target="_blank" rel="noopener">أرسلي الطلب عبر إنستغرام</a>
-            <button type="button" class="btn btn-ghost" id="copy-invoice">نسخ تفاصيل الطلب</button>
+            <button type="button" class="btn btn-primary" id="start-checkout">إكمال الطلب</button>
             <button type="button" class="btn btn-ghost" id="clear-cart">إفراغ السلة</button>
           </div>
-          <p class="invoice-note">انسخي تفاصيل الطلب وأرسليها لنا برسالة على إنستغرام لتأكيد الطلب وتحديد التوصيل.</p>
+          <p class="invoice-note">أكملي الطلب بإدخال معلوماتك واختيار طريقة الدفع: عند الاستلام أو عبر شام كاش.</p>
         </section>`;
 }
 
 function initCart() {
   const root = document.getElementById('cart-root');
+  const checkoutRoot = document.getElementById('checkout-root');
+  const updateCheckout = mountCheckout(checkoutRoot);
 
   const render = () => {
     const lines = cart.getLines();
     const total = lines.reduce((sum, line) => sum + line.total, 0);
     const pieces = lines.reduce((sum, line) => sum + line.qty, 0);
 
+    updateCheckout(total);
     if (!lines.length) {
+      checkoutRoot.hidden = true;
       root.innerHTML = `
         <div class="empty-state">
           <svg class="empty-icon"><use href="#i-cart" /></svg>
@@ -380,14 +374,12 @@ function initCart() {
         ${invoiceMarkup(lines, pieces, total)}
       </div>`;
 
-    root.querySelector('#copy-invoice').addEventListener('click', async () => {
-      const text = invoiceText(lines, total);
-      try {
-        await navigator.clipboard.writeText(text);
-        toast('تم نسخ تفاصيل الطلب.');
-      } catch {
-        window.prompt('انسخي تفاصيل الطلب:', text);
-      }
+    root.querySelector('#start-checkout').addEventListener('click', () => {
+      checkoutRoot.hidden = false;
+      checkoutRoot.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      checkoutRoot
+        .querySelector('[name="name"]')
+        ?.focus({ preventScroll: true });
     });
 
     root.querySelector('#clear-cart').addEventListener('click', async () => {
